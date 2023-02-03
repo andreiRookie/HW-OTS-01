@@ -1,6 +1,6 @@
+import java.lang.Thread.sleep
 import kotlin.random.Random
 import kotlin.system.measureTimeMillis
-import kotlin.time.measureTime
 
 const val SIZE = 100
 
@@ -11,10 +11,9 @@ fun main() {
     println(list)
 
     val handledList = list
-        .filter { it % 2 ==0 }
+        .filter { it % 2 == 0 }
         .slice(10 until 20)
-        .map { it + 1 }
-        .sum()
+        .sumOf { it + 1 }
 
     println(handledList)
 
@@ -34,7 +33,7 @@ fun main() {
     }
 
 
-    val personList = listOf<Person>(
+    val personList = listOf(
         Person("Ivan", "Pertov", 35),
         Person("Petr", "Ivanov", 30),
         Person("Pavel", "Sidorov", 27),
@@ -51,5 +50,13 @@ fun main() {
     println(personList.alphabeticSort())
 
 
+    fun <T> getFunExecutionTime(action: () -> T): Long {
+        return measureTimeMillis {
+            sleep(100)
+            action() }
+    }
+
+    println(getFunExecutionTime { personList.ageDescendingSort() })
+    println(getFunExecutionTime { personList.alphabeticSort() })
 
 }
