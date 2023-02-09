@@ -21,12 +21,16 @@ fun main() {
         return this.sortedByDescending {  it.age }
     }
 
+//    list.sortedWith(compareBy())
+
     fun List<Person>.alphabeticSort(): List<Person> {
         val comparator = Comparator<Person> { o1, o2 ->
-            if (o1.name == o2.name) {
+            val namesComparison = compareValues(o1.name, o2.name)
+
+            if (namesComparison == 0) {
                 compareValues(o1.surname, o2.surname)
             } else {
-                compareValues(o1.name, o2.name)
+                namesComparison
             }
         }
         return this.sortedWith(comparator)
@@ -50,13 +54,15 @@ fun main() {
     println(personList.alphabeticSort())
 
 
-    fun <T> getFunExecutionTime(action: () -> T): Long {
-        return measureTimeMillis {
-            sleep(100)
-            action() }
+    fun getFunExecutionTime(action: () -> Unit): Long {
+        val startTime = System.nanoTime()
+
+        action()
+        val endTime =System.nanoTime()
+
+        return endTime - startTime
     }
 
     println(getFunExecutionTime { personList.ageDescendingSort() })
     println(getFunExecutionTime { personList.alphabeticSort() })
-
 }
