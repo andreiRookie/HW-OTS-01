@@ -1,6 +1,4 @@
-import java.lang.Thread.sleep
 import kotlin.random.Random
-import kotlin.system.measureTimeMillis
 
 const val SIZE = 100
 
@@ -8,6 +6,7 @@ fun main() {
 
     val list = List(SIZE) { Random.nextInt(0, SIZE)}
 
+    println("____list____")
     println(list)
 
     val handledList = list
@@ -15,13 +14,12 @@ fun main() {
         .slice(10 until 20)
         .sumOf { it + 1 }
 
+    println("____handledList____")
     println(handledList)
 
     fun List<Person>.ageDescendingSort(): List<Person> {
         return this.sortedByDescending {  it.age }
     }
-
-//    list.sortedWith(compareBy())
 
     fun List<Person>.alphabeticSort(): List<Person> {
         val comparator = Comparator<Person> { o1, o2 ->
@@ -50,8 +48,14 @@ fun main() {
     )
 
 
+    println("____AgeDescendingSorted____")
     println(personList.ageDescendingSort())
+
+    println("____AlphabeticSorted w my comparator by name/surname____")
     println(personList.alphabeticSort())
+
+    println("____AlphabeticSorted using list.sortedWith(compareBy({name},{surname} )____")
+    println(personList.sortedWith(compareBy( {person -> person.name}, {person-> person.surname})))
 
 
     fun getFunExecutionTime(action: () -> Unit): Long {
@@ -63,6 +67,11 @@ fun main() {
         return endTime - startTime
     }
 
+    println("____getFunExecutionTime of personList.ageDescendingSort()____")
     println(getFunExecutionTime { personList.ageDescendingSort() })
+    println("____getFunExecutionTime of my comparator by name/surname____")
     println(getFunExecutionTime { personList.alphabeticSort() })
+    println("____getFunExecutionTime of list.sortedWith(compareBy({name},{surname} )____")
+    println(getFunExecutionTime { (personList.sortedWith(compareBy( {person -> person.name}, {person-> person.surname} ))) })
+
 }
